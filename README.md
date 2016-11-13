@@ -36,7 +36,6 @@ Render
 	<JsonTree json={json} />
 ```
 
-Result
 ![preview](screen_shot.png)
 
 ### Custom rendering rules

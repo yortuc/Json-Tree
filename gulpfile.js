@@ -32,6 +32,9 @@ var taskConfig = {
 		scripts: [
 			'example.js'
 		],
+		css: [
+			'JsonTree.css'
+		],
 		less: [
 			'example.less'
 		]
