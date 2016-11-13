@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.App{
+	margin-left: 20px;
+}
+
+.box{
+    width: 300px;
+}

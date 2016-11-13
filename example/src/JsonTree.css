@@ -1,0 +1,46 @@
+.JsonTree-Tree {
+	background: #eee;
+    padding: 10px;
+    border: 1px solid #ccc;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+.JsonTree-Node-Item {
+	margin-left:  15px;
+	min-height: 25px;
+}
+
+.JsonTree-Node-Key {
+	display: inline-block;
+	vertical-align: top;
+	color: #008fd2;
+	min-height: 25px;
+}
+
+.JsonTree-Node-Key a{
+	text-decoration: none;
+	color: #008fd2;
+	font-size: 85%;
+	display: inline-block;
+	width: 15px;
+    height: 15px;
+}
+
+.JsonTree-Node-Value {
+	display: inline-block;
+	margin-left: 10px;
+	vertical-align: top;
+}
+.JsonTree-Node-Value.child-element {display: block;}
+
+.JsonTree-Node-Value.hidden {display: none;}
+
+.JsonTree-Node-Value-String { color: green; }
+
+.JsonTree-Node-Value-String a { color: green; }
+
+.JsonTree-Node-Value-Number { color: red; }

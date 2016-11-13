@@ -1,0 +1,29 @@
+{
+  "name": "iso-json-tree",
+  "version": "0.0.0",
+  "description": "iso-json-tree",
+  "main": "dist/iso-json-tree.min.js",
+  "homepage": "https://github.com/yortuc/Json-Tree",
+  "authors": [
+    "Evren Yortucboylu"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "react",
+    "react-component"
+  ],
+  "license": "MIT",
+  "ignore": [
+    ".editorconfig",
+    ".gitignore",
+    "package.json",
+    "src",
+    "node_modules",
+    "example",
+    "test"
+  ]
+}
