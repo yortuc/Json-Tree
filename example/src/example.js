@@ -45,14 +45,7 @@ class App extends Component {
     return (
       <div className="App">     
       	<h3>Basic usage with no configuration </h3> 
-      	<div className="box">
-        	<JsonTree json={json} />
-        	<div>
-        		<pre>
-        			jsonDataObject
-        		</pre>
-        	</div>
-        </div>
+       	<JsonTree json={json} />
 
         <h3>Custom value renderer (render image links in urls)</h3> 
         <JsonTree json={photoAlbum} rules={photoRules} />

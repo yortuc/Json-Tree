@@ -33,7 +33,7 @@ var jsonData = {
 ```
 Render
 ```jsx
-	<JsonTree json={json} />
+<JsonTree json={json} />
 ```
 
 ![preview](screen_shot.png)
@@ -79,10 +79,13 @@ And render
 Custom rules is an array of functions wich take two arguments: name and value.
 These functions are called before rendering of each key-value pair in json tree sequentially. If any match occurs, result is returned immediately. In the above custom image rendering example, first we check if the value is type of string. And then check the value if it's a valid image url string with help of a simple regex. Then return custom result. You need to follow the class structure not to break overall layout. 
 
+### Iterator support
+Now cheks if any given ´value´ is an iterator, converts it to an array and renders properly.
+
 ## Roadmap
 ✓ Customizable rendering api
 
-▢ Support for [iterable protocol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+✓ Support for [iterable protocol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
 
 ▢ Theming with [base16](https://github.com/alexkuz/react-base16-styling)
 
