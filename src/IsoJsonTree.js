@@ -12,7 +12,7 @@ var rules = [
   (name, value)=> typeof value === "number" ? <EditorNumeric name={name} value={value}/> : null,
   (name, value)=> typeof value === "boolean" ? <EditorBoolean name={name} value={value}/> : null,
   (name, value)=> typeof value === "object" && !Array.isArray(value) && typeof value[Symbol.iterator] === 'function' ?
-  					<EditorArray value={Array.from(value)} name={name + " [itr: "+value.length+"]"}/>: null,
+  					<EditorArray value={Array.from(value)} name={name + "[iterable]"}/>: null,
   (name, value)=> typeof value === "object" && Array.isArray(value) ? <EditorArray value={value} name={name + " ["+value.length+"]"}/> : null,
   (name, value)=> typeof value === "object" ? <EditorObject value={value} name={name + " {"+ Object.keys(value).length +"}"}/> : null
 ];
