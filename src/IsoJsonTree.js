@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+
+
 /*
 *
 */
@@ -64,7 +66,7 @@ class Collapsable extends Component {
     return(
        <div className="JsonTree-Node-Item">
         <div className="JsonTree-Node-Key">
-          <a href="#" onClick={this.toggle.bind(this)}>{this.state.collapsed ? "▶" : "▼"}︎</a>
+          <a href="#" onClick={this.toggle.bind(this)} className={"Collapsable-Arrow" + (this.state.collapsed ? "" : " Open")}>▼</a>
           <span>{this.props.title}</span>
         </div>
         <div className={ "JsonTree-Node-Value child-element" + (this.state.collapsed ? " hidden" : "") }>

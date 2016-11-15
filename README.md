@@ -1,7 +1,5 @@
 ## Json-Tree Rendering Component for React
 
-
-
 Render plain js objects on DOM with customizable rendering api.
 
 Install
@@ -9,7 +7,8 @@ Install
 ```
 npm install iso-json-tree@latest
 ``` 
-Also include the `JsonTree.css` file in `node_modules/iso-json-tree/example` directory.
+
+Also include the css file: `node_modules/iso-json-tree/lib/JsonTree.css`
 
 ### Basic usage with no setup
 ```javascript
@@ -87,6 +86,6 @@ Now cheks if any given ´value´ is an iterator, converts it to an array and ren
 
 ✓ Support for [iterable protocol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
 
-▢ Theming with [base16](https://github.com/alexkuz/react-base16-styling)
+▢ Theming with [base16](https://github.com/chriskempson/base16)
 
 ▢ Tests
