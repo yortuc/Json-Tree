@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 *
 */
 var rules = [
+  (name, value)=> typeof value === "function" ? <EditorFunc name={name} value={value} /> : null,
   (name, value)=> typeof value === "string" && !isNaN(Date.parse(value)) ? <EditorDate name={name} value={value}/> : null,
   (name, value)=> typeof value === "string" && (value.indexOf("http://") === 0 ||  
            value.indexOf("https://") === 0 ||
@@ -81,7 +82,7 @@ class EditorString extends Component {
   getLabel() {
   	return <span className="JsonTree-Node-Value-String">{"\"" + this.props.value + "\""}</span>
   } 
- 
+
   render() {
     return  <div className="JsonTree-Node-Item">
               <div className="JsonTree-Node-Key">{this.props.name} : </div>
@@ -122,7 +123,7 @@ class EditorDate extends EditorString {
     if (mm < 10) mm = '0' + mm;
 
     return dd + '.' + mm + '.' + yyyy; 
-  }
+  } 
 
   getLabel() {
   	return <span className="JsonTree-Node-Value-Number">{this.formatDate(this.props.value)}</span>
@@ -148,5 +149,35 @@ class EditorObject extends EditorString {
 	        </Collapsable>
   } 
 }
+
+class EditorFunc extends EditorString {
+
+  getParamNames() {
+    var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+    var ARGUMENT_NAMES = /([^\s,]+)/g;
+
+    var fnStr = this.props.value.toString().replace(STRIP_COMMENTS, '');
+    var result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+    if(result === null)
+       result = [];
+    return result;
+  }
+
+  render(){
+    let sourceCode = this.props.value.toString().split('\n');
+
+    return <Collapsable title={this.props.value.name + "(" + this.getParamNames() + ")"}>
+             <div className="JsonTree-Node-Item JsonTree-Node-Value-Func">
+                {sourceCode.map((line)=> {
+                  return <div className="JsonTree-Node-Value-Func-Line">
+                            {line}
+                         </div>
+                })}
+                
+             </div>
+          </Collapsable>
+  } 
+}
+
 
 export default JsonTree;

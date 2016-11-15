@@ -1,3 +1,7 @@
+body{
+	font: sans-serif;
+}
+
 .JsonTree-Tree {
 	background: #eee;
     padding: 10px;

@@ -40,16 +40,32 @@ const photoRules = [
 		            </div> : null
 ];
 
+const funcObj = {
+  description: "Api methods",
+  getSongs: function(artistId, albumId) {
+    // return promise
+    return fetch("api/artist/"+artistId+"/album"+albumId+"/songs");
+  },
+  getCover: function(albumId){
+    // return promise
+    return fetch("api/album/"+albumId); 
+  }
+};
+
 class App extends Component {
   render() {
     return (
       <div className="App">     
+        <h3>Func support</h3>
+        <JsonTree json={funcObj} />
+
       	<h3>Basic usage with no configuration </h3> 
        	<JsonTree json={json} />
 
         <h3>Custom value renderer (render image links in urls)</h3> 
         <JsonTree json={photoAlbum} rules={photoRules} />
 
+        
       </div>
     );
   }
