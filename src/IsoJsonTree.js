@@ -59,7 +59,8 @@ class Collapsable extends Component {
     this.state = {collapsed: false};
   }
 
-  toggle() {
+  toggle(e) {
+    e.preventDefault();
   	this.setState({ collapsed: !this.state.collapsed })
   } 
   
@@ -70,7 +71,7 @@ class Collapsable extends Component {
           <a href="#" onClick={this.toggle.bind(this)} className={"Collapsable-Arrow" + (this.state.collapsed ? "" : " Open")}>▼</a>
           <span>{this.props.title}</span>
         </div>
-        <div className={ "JsonTree-Node-Value child-element" + (this.state.collapsed ? " hidden" : "") }>
+        <div className={ "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.collapsed ? "" : " Open") }>
           {this.props.children}
         </div>
       </div>
@@ -153,13 +154,15 @@ class EditorObject extends EditorString {
 class EditorFunc extends EditorString {
 
   getParamNames() {
+    /*
+      http://stackoverflow.com/questions/1007981/how-to-get-function-parameter-names-values-dynamically-from-javascript
+    */
     var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
     var ARGUMENT_NAMES = /([^\s,]+)/g;
 
     var fnStr = this.props.value.toString().replace(STRIP_COMMENTS, '');
     var result = fnStr.slice(fnStr.indexOf('(')+1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-    if(result === null)
-       result = [];
+    if(result === null) result = [];
     return result;
   }
 

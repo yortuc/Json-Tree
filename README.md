@@ -1,6 +1,6 @@
 ## Json-Tree Rendering Component for React
 
-Render plain js objects on DOM with customizable rendering api.
+Visualize any js object with customizable rendering api.
 
 Install
 
