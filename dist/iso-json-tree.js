@@ -21,25 +21,62 @@ var _react = (typeof window !== "undefined" ? window['React'] : typeof global !=
 var _react2 = _interopRequireDefault(_react);
 
 /*
-*
-*/
-var rules = [function (name, value) {
+ *  default rules for rendering basic types
+ */
+var rules = [
+/* null */
+function (name, value) {
+  return value === null ? _react2["default"].createElement(EditorString, { name: name, value: "null" }) : null;
+},
+
+/* function */
+function (name, value) {
+  return typeof value === "function" ? _react2["default"].createElement(EditorFunc, { name: name, value: value }) : null;
+},
+
+/* iso date-time */
+function (name, value) {
   return typeof value === "string" && !isNaN(Date.parse(value)) ? _react2["default"].createElement(EditorDate, { name: name, value: value }) : null;
-}, function (name, value) {
+}, //
+
+/* url */
+function (name, value) {
   return typeof value === "string" && (value.indexOf("http://") === 0 || value.indexOf("https://") === 0 || value.indexOf("www.") === 0) ? _react2["default"].createElement(EditorLink, { name: name, value: value }) : null;
-}, function (name, value) {
+},
+
+/* string */
+function (name, value) {
   return typeof value === "string" ? _react2["default"].createElement(EditorString, { name: name, value: value }) : null;
-}, function (name, value) {
+},
+
+/* number */
+function (name, value) {
   return typeof value === "number" ? _react2["default"].createElement(EditorNumeric, { name: name, value: value }) : null;
-}, function (name, value) {
+},
+
+/* boolean */
+function (name, value) {
   return typeof value === "boolean" ? _react2["default"].createElement(EditorBoolean, { name: name, value: value }) : null;
-}, function (name, value) {
+},
+
+/* iterator */
+function (name, value) {
   return typeof value === "object" && !Array.isArray(value) && typeof value[Symbol.iterator] === 'function' ? _react2["default"].createElement(EditorArray, { value: Array.from(value), name: name + "[iterable]" }) : null;
-}, function (name, value) {
+},
+
+/* array */
+function (name, value) {
   return typeof value === "object" && Array.isArray(value) ? _react2["default"].createElement(EditorArray, { value: value, name: name + " [" + value.length + "]" }) : null;
-}, function (name, value) {
+},
+
+/* object */
+function (name, value) {
   return typeof value === "object" ? _react2["default"].createElement(EditorObject, { value: value, name: name + " {" + Object.keys(value).length + "}" }) : null;
 }];
+
+/*
+*   main tree
+*/
 
 var JsonTree = (function (_Component) {
   _inherits(JsonTree, _Component);
@@ -50,7 +87,24 @@ var JsonTree = (function (_Component) {
     _get(Object.getPrototypeOf(JsonTree.prototype), "constructor", this).call(this, props);
 
     this.state = {};
+
+    // merge rules with customs
     rules = Array.prototype.concat(this.props.rules || [], rules);
+
+    // check the parameter, if its json string or js object
+    if (typeof this.props.data === "string") {
+      try {
+        var obj = JSON.parse(this.props.data);
+        this._dataObject = obj;
+      } catch (err) {
+        throw "iso-json-tree data parse error. json string cannot be converted to object. " + err;
+        this._dataObject = {};
+      }
+    } else if (typeof this.props.data === "object") {
+      this._dataObject = this.props.data;
+    } else {
+      throw "iso-json-tree data is not in the expected format.";
+    }
   }
 
   _createClass(JsonTree, [{
@@ -59,13 +113,23 @@ var JsonTree = (function (_Component) {
       return _react2["default"].createElement(
         "div",
         { className: "JsonTree-Tree" },
-        _react2["default"].createElement(KeyValue, { name: this.props.title || "", value: this.props.json })
+        _react2["default"].createElement(KeyValue, { name: this.props.title || "", value: this._dataObject })
       );
     }
   }]);
 
   return JsonTree;
 })(_react.Component);
+
+JsonTree.propTypes = {
+  title: _react2["default"].PropTypes.string,
+  rules: _react2["default"].PropTypes.arrayOf(_react2["default"].PropTypes.func),
+  data: [_react2["default"].PropTypes.object, _react2["default"].PropTypes.string]
+};
+
+/*
+*   key-value pairs
+*/
 
 var KeyValue = (function (_Component2) {
   _inherits(KeyValue, _Component2);
@@ -75,6 +139,10 @@ var KeyValue = (function (_Component2) {
 
     _get(Object.getPrototypeOf(KeyValue.prototype), "constructor", this).apply(this, arguments);
   }
+
+  /*
+   *  Collapsable panel component
+   */
 
   _createClass(KeyValue, [{
     key: "render",
@@ -108,7 +176,8 @@ var Collapsable = (function (_Component3) {
 
   _createClass(Collapsable, [{
     key: "toggle",
-    value: function toggle() {
+    value: function toggle(e) {
+      e.preventDefault();
       this.setState({ collapsed: !this.state.collapsed });
     }
   }, {
@@ -122,19 +191,18 @@ var Collapsable = (function (_Component3) {
           { className: "JsonTree-Node-Key" },
           _react2["default"].createElement(
             "a",
-            { href: "#", onClick: this.toggle.bind(this) },
-            this.state.collapsed ? "▶" : "▼",
-            "︎"
+            { href: "#", onClick: this.toggle.bind(this), className: "Collapsable-Arrow" + (this.state.collapsed ? "" : " Open") },
+            "▼"
           ),
           _react2["default"].createElement(
-            "span",
-            null,
+            "a",
+            { href: "#", onClick: this.toggle.bind(this) },
             this.props.title
           )
         ),
         _react2["default"].createElement(
           "div",
-          { className: "JsonTree-Node-Value child-element" + (this.state.collapsed ? " hidden" : "") },
+          { className: "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.collapsed ? " hidden" : "") },
           this.props.children
         )
       );
@@ -347,6 +415,55 @@ var EditorObject = (function (_EditorString6) {
   }]);
 
   return EditorObject;
+})(EditorString);
+
+var EditorFunc = (function (_EditorString7) {
+  _inherits(EditorFunc, _EditorString7);
+
+  function EditorFunc() {
+    _classCallCheck(this, EditorFunc);
+
+    _get(Object.getPrototypeOf(EditorFunc.prototype), "constructor", this).apply(this, arguments);
+  }
+
+  _createClass(EditorFunc, [{
+    key: "getParamNames",
+    value: function getParamNames() {
+      /*
+        http://stackoverflow.com/questions/1007981/how-to-get-function-parameter-names-values-dynamically-from-javascript
+      */
+      var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+      var ARGUMENT_NAMES = /([^\s,]+)/g;
+
+      var fnStr = this.props.value.toString().replace(STRIP_COMMENTS, '');
+      var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+      if (result === null) result = [];
+      return result;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var sourceCode = this.props.value.toString().split('\n');
+
+      return _react2["default"].createElement(
+        Collapsable,
+        { title: this.props.value.name + "(" + this.getParamNames() + ")" },
+        _react2["default"].createElement(
+          "div",
+          { className: "JsonTree-Node-Item JsonTree-Node-Value-Func" },
+          sourceCode.map(function (line) {
+            return _react2["default"].createElement(
+              "div",
+              { className: "JsonTree-Node-Value-Func-Line" },
+              line
+            );
+          })
+        )
+      );
+    }
+  }]);
+
+  return EditorFunc;
 })(EditorString);
 
 exports["default"] = JsonTree;
