@@ -52,19 +52,55 @@ const funcObj = {
   }
 };
 
+const jsonString = `
+{
+  "login": "yortuc",
+  "id": 1906982,
+  "avatar_url": "https://avatars.githubusercontent.com/u/1906982?v=3",
+  "gravatar_id": "",
+  "url": "https://api.github.com/users/yortuc",
+  "html_url": "https://github.com/yortuc",
+  "followers_url": "https://api.github.com/users/yortuc/followers",
+  "following_url": "https://api.github.com/users/yortuc/following{/other_user}",
+  "gists_url": "https://api.github.com/users/yortuc/gists{/gist_id}",
+  "starred_url": "https://api.github.com/users/yortuc/starred{/owner}{/repo}",
+  "subscriptions_url": "https://api.github.com/users/yortuc/subscriptions",
+  "organizations_url": "https://api.github.com/users/yortuc/orgs",
+  "repos_url": "https://api.github.com/users/yortuc/repos",
+  "events_url": "https://api.github.com/users/yortuc/events{/privacy}",
+  "received_events_url": "https://api.github.com/users/yortuc/received_events",
+  "type": "User",
+  "site_admin": false,
+  "name": "Evren Yortuçboylu",
+  "company": null,
+  "blog": "http://yortuc.com",
+  "location": "Türkiye",
+  "email": "yortucboylu@gmail.com",
+  "hireable": null,
+  "bio": null,
+  "public_repos": 24,
+  "public_gists": 7,
+  "followers": 12,
+  "following": 59,
+  "created_at": "2012-06-29T18:32:09Z",
+  "updated_at": "2016-11-15T12:53:24Z"
+}`;
+
 class App extends Component {
   render() {
     return (
-      <div className="App">     
-        <h3>Func support</h3>
-        <JsonTree json={funcObj} />
+      <div className="App"> 
+        <JsonTree data={json} title={"Basic usage with no configuration"}/>
+        <hr />
 
-      	<h3>Basic usage with no configuration </h3> 
-       	<JsonTree json={json} />
+        <JsonTree data={jsonString} title={"JSON string render"} />
+        <hr />
 
-        <h3>Custom value renderer (render image links in urls)</h3> 
-        <JsonTree json={photoAlbum} rules={photoRules} />
-
+        <JsonTree data={photoAlbum} rules={photoRules} title={"Custom value renderer (render image links in urls)"} />
+        <hr />
+        
+        <JsonTree data={funcObj} title={"Func Support"} />
+        <hr />
         
       </div>
     );

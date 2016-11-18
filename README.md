@@ -1,6 +1,6 @@
 ## Json-Tree Rendering Component for React
 
-Visualize any js object with customizable rendering api.
+Visualize JSON string and js objects with customizable rendering api.
 
 Install
 
@@ -32,7 +32,7 @@ var jsonData = {
 ```
 Render
 ```jsx
-<JsonTree json={json} />
+<JsonTree data={json} />
 ```
 
 ![preview](screen_shot.png)
@@ -70,7 +70,7 @@ const photoRules = [
 
 And render
 ```jsx
-<JsonTree json={photoAlbum} rules={photoRules} />
+<JsonTree data={photoAlbum} rules={photoRules} />
 ```
 
 ![custom rendering](custom_rendering.png)
@@ -79,12 +79,19 @@ Custom rules is an array of functions wich take two arguments: name and value.
 These functions are called before rendering of each key-value pair in json tree sequentially. If any match occurs, result is returned immediately. In the above custom image rendering example, first we check if the value is type of string. And then check the value if it's a valid image url string with help of a simple regex. Then return custom result. You need to follow the class structure not to break overall layout. 
 
 ### Iterator support
-Now cheks if any given ´value´ is an iterator, converts it to an array and renders properly.
+Now iso-json-tree cheks if any given ´value´ is an iterator, converts it to an array and renders properly.
+
+### Function support
+Since iso-json-tree can render both Json strings ans JavaScript objects, if and object contains function, now it will be rendered accordingly. 
+
+![function rendering support](function_support.png)
 
 ## Roadmap
 ✓ Customizable rendering api
 
 ✓ Support for [iterable protocol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+
+✓ Support for function rendering
 
 ▢ Theming with [base16](https://github.com/chriskempson/base16)
 

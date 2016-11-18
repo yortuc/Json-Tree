@@ -1,42 +1,96 @@
 import React, {Component} from 'react';
 
-
-
 /*
-*
-*/
+ *  default rules for rendering basic types
+ */
 var rules = [
-  (name, value)=> typeof value === "function" ? <EditorFunc name={name} value={value} /> : null,
-  (name, value)=> typeof value === "string" && !isNaN(Date.parse(value)) ? <EditorDate name={name} value={value}/> : null,
+  /* null */
+  (name, value)=> value === null ? <EditorString name={name} value={"null"} /> : null,
+
+  /* function */
+  (name, value)=> typeof value === "function" ? <EditorFunc name={name} value={value} /> : null,  
+
+  /* iso date-time */
+  (name, value)=> typeof value === "string" && !isNaN(Date.parse(value)) ? <EditorDate name={name} value={value}/> : null,  //
+  
+  /* url */
   (name, value)=> typeof value === "string" && (value.indexOf("http://") === 0 ||  
            value.indexOf("https://") === 0 ||
            value.indexOf("www.") === 0) ? <EditorLink name={name} value={value} /> : null,          
+  
+  /* string */
   (name, value)=> typeof value === "string" ? <EditorString name={name} value={value}/> : null,
+  
+  /* number */
   (name, value)=> typeof value === "number" ? <EditorNumeric name={name} value={value}/> : null,
+  
+  /* boolean */
   (name, value)=> typeof value === "boolean" ? <EditorBoolean name={name} value={value}/> : null,
+  
+  /* iterator */
   (name, value)=> typeof value === "object" && !Array.isArray(value) && typeof value[Symbol.iterator] === 'function' ?
   					<EditorArray value={Array.from(value)} name={name + "[iterable]"}/>: null,
+  
+  /* array */
   (name, value)=> typeof value === "object" && Array.isArray(value) ? <EditorArray value={value} name={name + " ["+value.length+"]"}/> : null,
+  
+  /* object */
   (name, value)=> typeof value === "object" ? <EditorObject value={value} name={name + " {"+ Object.keys(value).length +"}"}/> : null
 ];
 
 
+/*
+*   main tree
+*/
 class JsonTree extends Component {
   constructor(props) {
     super(props);
   
     this.state = {};
+
+    // merge rules with customs
     rules = Array.prototype.concat(this.props.rules || [] , rules);
+
+    // check the parameter, if its json string or js object
+    if (typeof this.props.data === "string") {
+      try {
+        let obj = JSON.parse(this.props.data);
+        this._dataObject = obj;
+      }
+      catch(err) {
+        throw "iso-json-tree data parse error. json string cannot be converted to object. " + err;
+        this._dataObject = {};        
+      }
+    }
+    else if(typeof this.props.data === "object"){
+      this._dataObject = this.props.data;
+    }
+    else{
+      throw "iso-json-tree data is not in the expected format.";
+    }
   }
 
   render() {
     return (
       <div className="JsonTree-Tree">
-        <KeyValue name={this.props.title || ""} value={this.props.json} />
+        <KeyValue name={this.props.title || ""} value={this._dataObject} />
       </div>)
   }
 }
 
+JsonTree.propTypes = {
+  title: React.PropTypes.string,
+  rules: React.PropTypes.arrayOf(React.PropTypes.func),
+  data:  [ 
+    React.PropTypes.object, 
+    React.PropTypes.string 
+  ]
+}
+
+
+/*
+*   key-value pairs
+*/
 class KeyValue extends Component {
   render() {
     var ret;
@@ -53,6 +107,10 @@ class KeyValue extends Component {
   }
 }
 
+
+/*
+ *  Collapsable panel component
+ */
 class Collapsable extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +119,7 @@ class Collapsable extends Component {
 
   toggle(e) {
     e.preventDefault();
-  	this.setState({ collapsed: !this.state.collapsed })
+  	this.setState({ collapsed: !this.state.collapsed });
   } 
   
   render() {
@@ -69,9 +127,9 @@ class Collapsable extends Component {
        <div className="JsonTree-Node-Item">
         <div className="JsonTree-Node-Key">
           <a href="#" onClick={this.toggle.bind(this)} className={"Collapsable-Arrow" + (this.state.collapsed ? "" : " Open")}>▼</a>
-          <span>{this.props.title}</span>
+          <a href="#" onClick={this.toggle.bind(this)}>{this.props.title}</a>
         </div>
-        <div className={ "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.collapsed ? "" : " Open") }>
+        <div className={ "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.collapsed ? " hidden" : "") }>
           {this.props.children}
         </div>
       </div>
