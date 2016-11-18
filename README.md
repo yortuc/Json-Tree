@@ -84,6 +84,24 @@ Now iso-json-tree cheks if any given ´value´ is an iterator, converts it to an
 ### Function support
 Since iso-json-tree can render both Json strings ans JavaScript objects, if and object contains function, now it will be rendered accordingly. 
 
+```javascript
+const api = {
+  description: "Api methods",
+  getSongs: function(artistId, albumId) {
+    // return promise
+    return fetch("api/artist/"+artistId+"/album"+albumId+"/songs");
+  },
+  getCover: function(albumId){
+    // return promise
+    return fetch("api/album/"+albumId); 
+  }
+};
+```
+
+```jsx
+<JsonTree data={api} />
+```
+
 ![function rendering support](function_support.png)
 
 ## Roadmap
