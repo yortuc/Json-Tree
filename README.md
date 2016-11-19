@@ -111,6 +111,8 @@ const api = {
 
 ✓ Support for function rendering
 
-▢ Theming with [base16](https://github.com/chriskempson/base16)
-
 ▢ Tests
+
+▢ Support arrow and anonymous functions, code formatting
+
+▢ Theming with [base16](https://github.com/chriskempson/base16)

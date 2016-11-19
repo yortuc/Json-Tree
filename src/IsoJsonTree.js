@@ -66,7 +66,7 @@ class JsonTree extends Component {
       this._dataObject = this.props.data;
     }
     else{
-      throw "iso-json-tree data is not in the expected format.";
+      throw "iso-json-tree data is not in the expected format. provided data = " + JSON.stringify(this.props.data);
     }
   }
 
@@ -80,12 +80,16 @@ class JsonTree extends Component {
 
 JsonTree.propTypes = {
   title: React.PropTypes.string,
+
   rules: React.PropTypes.arrayOf(React.PropTypes.func),
-  data:  [ 
+
+  data:  React.PropTypes.oneOfType([
     React.PropTypes.object, 
     React.PropTypes.string 
-  ]
+  ]).isRequired
 }
+
+JsonTree.displayName = 'JsonTree';
 
 
 /*
@@ -106,6 +110,8 @@ class KeyValue extends Component {
     return ret;
   }
 }
+
+KeyValue.displayName = "KeyValue";
 
 
 /*
@@ -149,6 +155,7 @@ class EditorString extends Component {
             </div>;
   }
 }
+EditorString.displayName = "EditorString";
 
 class EditorLink extends EditorString {
   getLabel() {
@@ -156,20 +163,23 @@ class EditorLink extends EditorString {
 		      "<a href={this.props.value} target="_blank">{this.props.value}</a>"
 		   </span>
   } 
-
 }
+EditorLink.displayName = "EditorLink";
 
 class EditorNumeric extends EditorString {
   getLabel(){
   	return <span className="JsonTree-Node-Value-Number">{this.props.value}</span>
   }
 }
+EditorNumeric.displayName = "EditorNumeric";
+
 
 class EditorBoolean extends EditorString {
   getLabel() {
   	return <span className="JsonTree-Node-Value-Number">{JSON.stringify(this.props.value)}</span>
   }
 }
+EditorString.displayName = "EditorBoolean";
 
 class EditorDate extends EditorString {
   formatDate(strDate) {
@@ -188,6 +198,7 @@ class EditorDate extends EditorString {
   	return <span className="JsonTree-Node-Value-Number">{this.formatDate(this.props.value)}</span>
   }
 }
+EditorDate.displayName = "EditorDate";
 
 class EditorArray extends EditorString {
   render(){
@@ -198,16 +209,18 @@ class EditorArray extends EditorString {
            </Collapsable>
   }
 }
+EditorArray.displayName = "EditorArray";
 
 class EditorObject extends EditorString {
   render(){
   	return <Collapsable title={this.props.name}>
-	          {Object.keys(this.props.value).map((item)=> 
+	          {Object.keys(this.props.value).map((item, index)=> 
 	            <KeyValue name={item} value={this.props.value[item]} />
 	          )}
 	        </Collapsable>
   } 
 }
+EditorObject.displayName = "EditorObject";
 
 class EditorFunc extends EditorString {
 
@@ -229,8 +242,8 @@ class EditorFunc extends EditorString {
 
     return <Collapsable title={this.props.value.name + "(" + this.getParamNames() + ")"}>
              <div className="JsonTree-Node-Item JsonTree-Node-Value-Func">
-                {sourceCode.map((line)=> {
-                  return <div className="JsonTree-Node-Value-Func-Line">
+                {sourceCode.map((line, index)=> {
+                  return <div className="JsonTree-Node-Value-Func-Line" key={"line_"  +index}>
                             {line}
                          </div>
                 })}
@@ -239,6 +252,7 @@ class EditorFunc extends EditorString {
           </Collapsable>
   } 
 }
+EditorFunc.displayName = "EditorFunc";
 
 
 export default JsonTree;

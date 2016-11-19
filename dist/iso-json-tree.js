@@ -103,7 +103,7 @@ var JsonTree = (function (_Component) {
     } else if (typeof this.props.data === "object") {
       this._dataObject = this.props.data;
     } else {
-      throw "iso-json-tree data is not in the expected format.";
+      throw "iso-json-tree data is not in the expected format. provided data = " + JSON.stringify(this.props.data);
     }
   }
 
@@ -123,9 +123,13 @@ var JsonTree = (function (_Component) {
 
 JsonTree.propTypes = {
   title: _react2["default"].PropTypes.string,
+
   rules: _react2["default"].PropTypes.arrayOf(_react2["default"].PropTypes.func),
-  data: [_react2["default"].PropTypes.object, _react2["default"].PropTypes.string]
+
+  data: _react2["default"].PropTypes.oneOfType([_react2["default"].PropTypes.object, _react2["default"].PropTypes.string]).isRequired
 };
+
+JsonTree.displayName = 'JsonTree';
 
 /*
 *   key-value pairs
@@ -139,10 +143,6 @@ var KeyValue = (function (_Component2) {
 
     _get(Object.getPrototypeOf(KeyValue.prototype), "constructor", this).apply(this, arguments);
   }
-
-  /*
-   *  Collapsable panel component
-   */
 
   _createClass(KeyValue, [{
     key: "render",
@@ -163,6 +163,12 @@ var KeyValue = (function (_Component2) {
 
   return KeyValue;
 })(_react.Component);
+
+KeyValue.displayName = "KeyValue";
+
+/*
+ *  Collapsable panel component
+ */
 
 var Collapsable = (function (_Component3) {
   _inherits(Collapsable, _Component3);
@@ -254,6 +260,8 @@ var EditorString = (function (_Component4) {
   return EditorString;
 })(_react.Component);
 
+EditorString.displayName = "EditorString";
+
 var EditorLink = (function (_EditorString) {
   _inherits(EditorLink, _EditorString);
 
@@ -283,6 +291,8 @@ var EditorLink = (function (_EditorString) {
   return EditorLink;
 })(EditorString);
 
+EditorLink.displayName = "EditorLink";
+
 var EditorNumeric = (function (_EditorString2) {
   _inherits(EditorNumeric, _EditorString2);
 
@@ -306,6 +316,8 @@ var EditorNumeric = (function (_EditorString2) {
   return EditorNumeric;
 })(EditorString);
 
+EditorNumeric.displayName = "EditorNumeric";
+
 var EditorBoolean = (function (_EditorString3) {
   _inherits(EditorBoolean, _EditorString3);
 
@@ -328,6 +340,8 @@ var EditorBoolean = (function (_EditorString3) {
 
   return EditorBoolean;
 })(EditorString);
+
+EditorString.displayName = "EditorString";
 
 var EditorDate = (function (_EditorString4) {
   _inherits(EditorDate, _EditorString4);
@@ -365,6 +379,8 @@ var EditorDate = (function (_EditorString4) {
   return EditorDate;
 })(EditorString);
 
+EditorDate.displayName = "EditorDate";
+
 var EditorArray = (function (_EditorString5) {
   _inherits(EditorArray, _EditorString5);
 
@@ -390,6 +406,8 @@ var EditorArray = (function (_EditorString5) {
   return EditorArray;
 })(EditorString);
 
+EditorArray.displayName = "EditorArray";
+
 var EditorObject = (function (_EditorString6) {
   _inherits(EditorObject, _EditorString6);
 
@@ -407,7 +425,7 @@ var EditorObject = (function (_EditorString6) {
       return _react2["default"].createElement(
         Collapsable,
         { title: this.props.name },
-        Object.keys(this.props.value).map(function (item) {
+        Object.keys(this.props.value).map(function (item, index) {
           return _react2["default"].createElement(KeyValue, { name: item, value: _this.props.value[item] });
         })
       );
@@ -416,6 +434,8 @@ var EditorObject = (function (_EditorString6) {
 
   return EditorObject;
 })(EditorString);
+
+EditorObject.displayName = "EditorObject";
 
 var EditorFunc = (function (_EditorString7) {
   _inherits(EditorFunc, _EditorString7);
@@ -451,10 +471,10 @@ var EditorFunc = (function (_EditorString7) {
         _react2["default"].createElement(
           "div",
           { className: "JsonTree-Node-Item JsonTree-Node-Value-Func" },
-          sourceCode.map(function (line) {
+          sourceCode.map(function (line, index) {
             return _react2["default"].createElement(
               "div",
-              { className: "JsonTree-Node-Value-Func-Line" },
+              { className: "JsonTree-Node-Value-Func-Line", key: "line_" + index },
               line
             );
           })
@@ -465,6 +485,8 @@ var EditorFunc = (function (_EditorString7) {
 
   return EditorFunc;
 })(EditorString);
+
+EditorFunc.displayName = "EditorFunc";
 
 exports["default"] = JsonTree;
 module.exports = exports["default"];
