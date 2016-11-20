@@ -141,7 +141,7 @@ class Collapsable extends Component {
           <a href="#" onClick={this.toggle.bind(this)} className={"Collapsable-Arrow" + (this.state.open ? " Open" : "") }>▼</a>
           <a href="#" onClick={this.toggle.bind(this)}>{this.props.title}</a>
         </div>
-        <div className={ "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.open ? "" : " Open") }>
+        <div className={ "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.open ? "" : " Hidden") }>
           {this.props.children}
         </div>
       </div>
