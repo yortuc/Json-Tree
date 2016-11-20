@@ -118,24 +118,30 @@ KeyValue.displayName = "KeyValue";
  *  Collapsable panel component
  */
 class Collapsable extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {collapsed: false};
+
+    this.state = { open: true };
   }
 
   toggle(e) {
     e.preventDefault();
-  	this.setState({ collapsed: !this.state.collapsed });
+  
+  	this.setState({ open: !this.state.open });
   } 
+
+  componentDidUpdate(prevProps, prevState) {
+  }
   
   render() {
     return(
        <div className="JsonTree-Node-Item">
         <div className="JsonTree-Node-Key">
-          <a href="#" onClick={this.toggle.bind(this)} className={"Collapsable-Arrow" + (this.state.collapsed ? "" : " Open")}>▼</a>
+          <a href="#" onClick={this.toggle.bind(this)} className={"Collapsable-Arrow" + (this.state.open ? " Open" : "") }>▼</a>
           <a href="#" onClick={this.toggle.bind(this)}>{this.props.title}</a>
         </div>
-        <div className={ "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.collapsed ? " hidden" : "") }>
+        <div className={ "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.open ? "" : " Open") }>
           {this.props.children}
         </div>
       </div>
@@ -204,7 +210,7 @@ class EditorArray extends EditorString {
   render(){
   	return <Collapsable title={this.props.name}>
              {this.props.value.map((item, index)=>
-               <KeyValue name={index} value={item} />
+               <KeyValue name={index} value={item} key={item+"_"+index}/>
              )}
            </Collapsable>
   }
@@ -215,7 +221,7 @@ class EditorObject extends EditorString {
   render(){
   	return <Collapsable title={this.props.name}>
 	          {Object.keys(this.props.value).map((item, index)=> 
-	            <KeyValue name={item} value={this.props.value[item]} />
+	            <KeyValue name={item} value={this.props.value[item]} key={item + "_" + index} />
 	          )}
 	        </Collapsable>
   } 

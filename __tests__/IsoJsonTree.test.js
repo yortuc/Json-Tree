@@ -68,4 +68,17 @@ describe('Complex: ', ()=> {
 
 		expect(wrapper.find("EditorArray")).to.have.length(1);
 	});
+
+	it('render function', ()=> {
+		var jsObj = {
+			someFunc: function someFunc(param) {
+				return true;
+			}
+		}
+		
+		var elm = React.createElement(JsonTree, {data: jsObj}, null);
+	    var wrapper = mount(elm);
+
+		expect(wrapper.find("EditorFunc")).to.have.length(1);
+	});
 });

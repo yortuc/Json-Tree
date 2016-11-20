@@ -177,15 +177,20 @@ var Collapsable = (function (_Component3) {
     _classCallCheck(this, Collapsable);
 
     _get(Object.getPrototypeOf(Collapsable.prototype), "constructor", this).call(this, props);
-    this.state = { collapsed: false };
+
+    this.state = { open: true };
   }
 
   _createClass(Collapsable, [{
     key: "toggle",
     value: function toggle(e) {
       e.preventDefault();
-      this.setState({ collapsed: !this.state.collapsed });
+
+      this.setState({ open: !this.state.open });
     }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {}
   }, {
     key: "render",
     value: function render() {
@@ -197,7 +202,7 @@ var Collapsable = (function (_Component3) {
           { className: "JsonTree-Node-Key" },
           _react2["default"].createElement(
             "a",
-            { href: "#", onClick: this.toggle.bind(this), className: "Collapsable-Arrow" + (this.state.collapsed ? "" : " Open") },
+            { href: "#", onClick: this.toggle.bind(this), className: "Collapsable-Arrow" + (this.state.open ? " Open" : "") },
             "▼"
           ),
           _react2["default"].createElement(
@@ -208,7 +213,7 @@ var Collapsable = (function (_Component3) {
         ),
         _react2["default"].createElement(
           "div",
-          { className: "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.collapsed ? " hidden" : "") },
+          { className: "Collapsable-Content JsonTree-Node-Value child-element" + (this.state.open ? "" : " Open") },
           this.props.children
         )
       );
@@ -341,7 +346,7 @@ var EditorBoolean = (function (_EditorString3) {
   return EditorBoolean;
 })(EditorString);
 
-EditorString.displayName = "EditorString";
+EditorString.displayName = "EditorBoolean";
 
 var EditorDate = (function (_EditorString4) {
   _inherits(EditorDate, _EditorString4);
@@ -397,7 +402,7 @@ var EditorArray = (function (_EditorString5) {
         Collapsable,
         { title: this.props.name },
         this.props.value.map(function (item, index) {
-          return _react2["default"].createElement(KeyValue, { name: index, value: item });
+          return _react2["default"].createElement(KeyValue, { name: index, value: item, key: item + "_" + index });
         })
       );
     }
@@ -426,7 +431,7 @@ var EditorObject = (function (_EditorString6) {
         Collapsable,
         { title: this.props.name },
         Object.keys(this.props.value).map(function (item, index) {
-          return _react2["default"].createElement(KeyValue, { name: item, value: _this.props.value[item] });
+          return _react2["default"].createElement(KeyValue, { name: item, value: _this.props.value[item], key: item + "_" + index });
         })
       );
     }
