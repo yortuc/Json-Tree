@@ -1,4 +1,6 @@
-## Json-Tree Rendering Component for React
+## Isomorphic Json-Tree Rendering React Component
+
+[![npm](https://img.shields.io/npm/dm/localeval.svg?style=flat-square)](iso-json-tree)
 
 Visualize JSON string and js objects with customizable rendering api.
 
@@ -32,7 +34,7 @@ var jsonData = {
 ```
 Render
 ```jsx
-<JsonTree data={json} />
+<JsonTree data={json} title="Basic usage with no setup" />
 ```
 
 ![preview](screen_shot.png)
@@ -99,7 +101,7 @@ const api = {
 ```
 
 ```jsx
-<JsonTree data={api} />
+<JsonTree data={api} title="Func support" />
 ```
 
 ![function rendering support](function_support.png)
