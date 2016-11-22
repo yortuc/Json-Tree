@@ -67,6 +67,7 @@ describe('Complex: ', ()=> {
 	    var wrapper = mount(elm);
 
 		expect(wrapper.find("EditorArray")).to.have.length(1);
+		expect(wrapper.find("EditorNumeric")).to.have.length(4);
 	});
 
 	it('render function', ()=> {
