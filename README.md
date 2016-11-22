@@ -1,9 +1,10 @@
-## Isomorphic Json-Tree Rendering React Component
+## iso-json-tree
 
-[![npm](https://img.shields.io/npm/dm/iso-json-tree.svg?style=flat-square)]()
+> Isomorphic Json-Tree Rendering React Component: Visualize JSON string and js objects with customizable rendering api.
+
 [![npm](https://img.shields.io/npm/v/iso-json-tree.svg?style=flat-square)]()
-
-Visualize JSON string and js objects with customizable rendering api.
+[![npm](https://img.shields.io/npm/dm/iso-json-tree.svg?style=flat-square)]()
+[![npm](https://img.shields.io/npm/l/express.svg?style=flat-square)]()
 
 Install
 
